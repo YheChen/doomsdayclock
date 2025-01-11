@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const Countdown = ({ className, examDate }) => {
+const Countdown = ({ className, examDate, onRemove }) => {
   const [timeLeft, setTimeLeft] = useState("");
   const [isClient, setIsClient] = useState(false);
 
@@ -38,7 +38,14 @@ const Countdown = ({ className, examDate }) => {
   if (!isClient) return null;
 
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4 text-center max-w-sm mx-auto">
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4 text-center max-w-sm mx-auto relative">
+      {/* Delete Button */}
+      <button
+        onClick={onRemove}
+        className="absolute top-2 right-2 text-xl font-bold text-red-600 hover:text-red-800"
+      >
+        ×
+      </button>
       <h2 className="text-xl font-semibold text-gray-800 mb-3">{className}:</h2>
       <p className="text-2xl font-bold text-red-600">{timeLeft}</p>
     </div>

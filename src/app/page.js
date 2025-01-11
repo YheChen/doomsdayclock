@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Countdown from "../components/countdown";
 
 export default function Home() {
@@ -8,12 +8,28 @@ export default function Home() {
   const [className, setClassName] = useState("");
   const [eventDate, setEventDate] = useState("");
 
+  // Load events from localStorage on component mount
+  useEffect(() => {
+    const storedEvents = JSON.parse(localStorage.getItem("events"));
+    if (storedEvents) {
+      setEvents(storedEvents);
+    }
+  }, []);
+
+  // Update localStorage whenever events change
+  useEffect(() => {
+    if (events.length > 0) {
+      localStorage.setItem("events", JSON.stringify(events));
+    }
+  }, [events]);
+
   const handleClassNameChange = (e) => setClassName(e.target.value);
   const handleEventDateChange = (e) => setEventDate(e.target.value);
 
   const addEvent = () => {
     if (className && eventDate) {
-      setEvents([...events, { className, eventDate: new Date(eventDate) }]);
+      const newEvent = { className, eventDate: new Date(eventDate) };
+      setEvents([...events, newEvent]);
       setClassName("");
       setEventDate("");
     }
@@ -21,8 +37,7 @@ export default function Home() {
 
   const clearEvents = () => {
     setEvents([]);
-    setClassName("");
-    setEventDate("");
+    localStorage.removeItem("events"); // Remove events from localStorage
   };
 
   const handleKeyDown = (e) => {
@@ -31,10 +46,10 @@ export default function Home() {
     }
   };
 
-  // Function to remove event from the list
   const removeEvent = (index) => {
     const newEvents = events.filter((_, i) => i !== index);
     setEvents(newEvents);
+    localStorage.setItem("events", JSON.stringify(newEvents)); // Update localStorage
   };
 
   return (

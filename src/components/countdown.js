@@ -35,12 +35,12 @@ const Countdown = ({ className, examDate }) => {
     return () => clearInterval(interval);
   }, [examDate, isClient]);
 
-  if (!isClient) return null; // Prevent rendering on the server side
+  if (!isClient) return null;
 
   return (
-    <div>
-      <h2>Countdown to {className} Event:</h2>
-      <p>{timeLeft}</p>
+    <div className="bg-gray-100 p-6 rounded-lg shadow-md mb-4 text-center max-w-sm mx-auto">
+      <h2 className="text-xl font-semibold text-gray-800 mb-3">{className}:</h2>
+      <p className="text-2xl font-bold text-red-600">{timeLeft}</p>
     </div>
   );
 };
